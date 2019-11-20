@@ -57,6 +57,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.ContentSizeChangeEvent;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativecommunity.webview.events.TopCommitContentEvent;
 import com.reactnativecommunity.webview.events.TopLoadingErrorEvent;
 import com.reactnativecommunity.webview.events.TopHttpErrorEvent;
 import com.reactnativecommunity.webview.events.TopLoadingFinishEvent;
@@ -157,6 +158,42 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   @Override
   public String getName() {
     return REACT_CLASS;
+  }
+
+  @Override
+  public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+      final InputConnection ic = super.onCreateInputConnection(editorInfo);
+      EditorInfoCompat.setContentMimeTypes(editorInfo,
+              new String [] {"image/*", "image/png", "image/gif", "image/jpeg", "video/mp4"});
+
+      final InputConnectionCompat.OnCommitContentListener callback =
+          new InputConnectionCompat.OnCommitContentListener() {
+              @Override
+              public boolean onCommitContent(InputContentInfoCompat inputContentInfo,
+                      int flags, Bundle opts) {
+                  // read and display inputContentInfo asynchronously
+                  if (BuildCompat.isAtLeastNMR1() && (flags &
+                      InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION) != 0) {
+                      try {
+                          inputContentInfo.requestPermission();
+                      }
+                      catch (Exception e) {
+                          return false; // return false if failed
+                      }
+                  }
+
+                  // read and display inputContentInfo asynchronously.
+                  // call inputContentInfo.releasePermission() as needed.
+                  // call my callback here?
+                  // callback(inputContentInfo, flags, opts)
+                  TopCommitContentEvent()
+                  dispatchEvent(
+                    webView,
+                    new TopHttpErrorEvent(webView.getId(), inputContentInfo));
+                  return true;  // return true if succeeded
+              }
+          };
+      return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
   }
 
   protected RNCWebView createRNCWebViewInstance(ThemedReactContext reactContext) {
@@ -545,6 +582,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     export.put(TopShouldStartLoadWithRequestEvent.EVENT_NAME, MapBuilder.of("registrationName", "onShouldStartLoadWithRequest"));
     export.put(ScrollEventType.getJSEventName(ScrollEventType.SCROLL), MapBuilder.of("registrationName", "onScroll"));
     export.put(TopHttpErrorEvent.EVENT_NAME, MapBuilder.of("registrationName", "onHttpError"));
+    export.put(TopCommitContentEvent.EVENT_NAME, MapBuilder.of("registrationName", "onCommitContent"));
     return export;
   }
 

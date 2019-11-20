@@ -653,6 +653,7 @@ export interface WebViewSharedProps extends ViewProps {
    * Works on iOS and Android (minimum API level 23).
    */
   onHttpError?: (event: WebViewHttpErrorEvent) => void;
+  onCommitContent?: (event: any) => void;
 
   /**
    * Function that is invoked when the `WebView` loading starts or ends.
