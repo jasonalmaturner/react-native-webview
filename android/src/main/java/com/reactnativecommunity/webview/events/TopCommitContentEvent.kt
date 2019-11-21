@@ -7,7 +7,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter
 /**
  * Event emitted when there is an error in loading.
  */
-class TopMessageEvent(viewId: Int, private val mEventData: WritableMap) : Event<TopMessageEvent>(viewId) {
+class TopCommitContentEvent(viewId: Int, private val mEventData: WritableMap) : Event<TopCommitContentEvent>(viewId) {
   companion object {
     const val EVENT_NAME = "topCommitContent"
   }
