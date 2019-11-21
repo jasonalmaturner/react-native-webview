@@ -977,6 +977,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
     @Override
     public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+        WebView webView = this;
         final InputConnection ic = super.onCreateInputConnection(editorInfo);
         EditorInfoCompat.setContentMimeTypes(editorInfo,
                 new String [] {"image/*", "image/png", "image/gif", "image/jpeg", "video/mp4"});
