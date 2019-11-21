@@ -36,6 +36,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.view.inputmethod.EditorInfo;
+import androidx.core.view.inputmethod.EditorInfoCompat;
+import android.view.inputmethod.InputConnection;
+import androidx.core.view.inputmethod.InputConnectionCompat;
 
 import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
@@ -158,42 +162,6 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   @Override
   public String getName() {
     return REACT_CLASS;
-  }
-
-  @Override
-  public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
-      final InputConnection ic = super.onCreateInputConnection(editorInfo);
-      EditorInfoCompat.setContentMimeTypes(editorInfo,
-              new String [] {"image/*", "image/png", "image/gif", "image/jpeg", "video/mp4"});
-
-      final InputConnectionCompat.OnCommitContentListener callback =
-          new InputConnectionCompat.OnCommitContentListener() {
-              @Override
-              public boolean onCommitContent(InputContentInfoCompat inputContentInfo,
-                      int flags, Bundle opts) {
-                  // read and display inputContentInfo asynchronously
-                  if (BuildCompat.isAtLeastNMR1() && (flags &
-                      InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION) != 0) {
-                      try {
-                          inputContentInfo.requestPermission();
-                      }
-                      catch (Exception e) {
-                          return false; // return false if failed
-                      }
-                  }
-
-                  // read and display inputContentInfo asynchronously.
-                  // call inputContentInfo.releasePermission() as needed.
-                  // call my callback here?
-                  // callback(inputContentInfo, flags, opts)
-                  TopCommitContentEvent();
-                  dispatchEvent(
-                    webView,
-                    new TopHttpErrorEvent(webView.getId(), inputContentInfo));
-                  return true;  // return true if succeeded
-              }
-          };
-      return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
   }
 
   protected RNCWebView createRNCWebViewInstance(ThemedReactContext reactContext) {
@@ -1005,6 +973,42 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     protected boolean sendContentSizeChangeEvents = false;
     private OnScrollDispatchHelper mOnScrollDispatchHelper;
     protected boolean hasScrollEvent = false;
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+        final InputConnection ic = super.onCreateInputConnection(editorInfo);
+        EditorInfoCompat.setContentMimeTypes(editorInfo,
+                new String [] {"image/*", "image/png", "image/gif", "image/jpeg", "video/mp4"});
+  
+        final InputConnectionCompat.OnCommitContentListener callback =
+            new InputConnectionCompat.OnCommitContentListener() {
+                @Override
+                public boolean onCommitContent(InputContentInfoCompat inputContentInfo,
+                        int flags, Bundle opts) {
+                    // read and display inputContentInfo asynchronously
+                    if (BuildCompat.isAtLeastNMR1() && (flags &
+                        InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION) != 0) {
+                        try {
+                            inputContentInfo.requestPermission();
+                        }
+                        catch (Exception e) {
+                            return false; // return false if failed
+                        }
+                    }
+  
+                    // read and display inputContentInfo asynchronously.
+                    // call inputContentInfo.releasePermission() as needed.
+                    // call my callback here?
+                    // callback(inputContentInfo, flags, opts)
+                    TopCommitContentEvent();
+                    dispatchEvent(
+                      webView,
+                      new TopHttpErrorEvent(webView.getId(), inputContentInfo));
+                    return true;  // return true if succeeded
+                }
+            };
+        return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
+    }
 
     /**
      * WebView must be created with an context of the current activity
