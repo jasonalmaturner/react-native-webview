@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.Manifest;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -40,6 +39,8 @@ import android.view.inputmethod.EditorInfo;
 import androidx.core.view.inputmethod.EditorInfoCompat;
 import android.view.inputmethod.InputConnection;
 import androidx.core.view.inputmethod.InputConnectionCompat;
+import androidx.core.view.inputmethod.InputContentInfoCompat;
+import androidx.core.os.BuildCompat;
 
 import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
