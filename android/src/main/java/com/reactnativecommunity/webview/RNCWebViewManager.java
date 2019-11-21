@@ -42,6 +42,7 @@ import android.view.inputmethod.InputConnection;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.core.os.BuildCompat;
+import android.os.Bundle;
 
 import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
@@ -1003,10 +1004,9 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                     // call inputContentInfo.releasePermission() as needed.
                     // call my callback here?
                     // callback(inputContentInfo, flags, opts)
-                    TopCommitContentEvent();
                     dispatchEvent(
                       webView,
-                      new TopHttpErrorEvent(webView.getId(), inputContentInfo));
+                      new TopCommitContentEvent(webView.getId(), inputContentInfo));
                     return true;  // return true if succeeded
                 }
             };
