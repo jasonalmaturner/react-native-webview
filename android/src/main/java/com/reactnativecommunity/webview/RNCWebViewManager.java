@@ -1005,9 +1005,9 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                     // call my callback here?
                     // callback(inputContentInfo, flags, opts)
                     WritableMap event = Arguments.createMap();
-                    event.contentUri = event.putString("contentUri", inputContentInfo.getContentUri().toString())
-                    event.linkUri = event.putString("linkUri", inputContentInfo.getLinkUri().toString())
-                    event.clipDescription = event.putString("clipDescription", inputContentInfo.getDescription().toString())
+                    event.contentUri = event.putString("contentUri", inputContentInfo.getContentUri().toString());
+                    event.linkUri = event.putString("linkUri", inputContentInfo.getLinkUri().toString());
+                    event.clipDescription = event.putString("clipDescription", inputContentInfo.getDescription().toString());
                     dispatchEvent(
                       webView,
                       new TopCommitContentEvent(webView.getId(), event));
