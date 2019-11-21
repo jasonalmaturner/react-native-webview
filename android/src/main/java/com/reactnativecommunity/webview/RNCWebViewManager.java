@@ -1004,9 +1004,13 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                     // call inputContentInfo.releasePermission() as needed.
                     // call my callback here?
                     // callback(inputContentInfo, flags, opts)
+                    WritableMap event = Arguments.createMap();
+                    event.contentUri = event.putString("contentUri", inputContentInfo.getContentUri().toString())
+                    event.linkUri = event.putString("linkUri", inputContentInfo.getLinkUri().toString())
+                    event.clipDescription = event.putString("clipDescription", inputContentInfo.getDescription().toString())
                     dispatchEvent(
                       webView,
-                      new TopCommitContentEvent(webView.getId(), inputContentInfo));
+                      new TopCommitContentEvent(webView.getId(), event));
                     return true;  // return true if succeeded
                 }
             };
