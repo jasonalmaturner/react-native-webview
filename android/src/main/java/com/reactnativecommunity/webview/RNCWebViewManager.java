@@ -186,7 +186,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                   // call inputContentInfo.releasePermission() as needed.
                   // call my callback here?
                   // callback(inputContentInfo, flags, opts)
-                  TopCommitContentEvent()
+                  TopCommitContentEvent();
                   dispatchEvent(
                     webView,
                     new TopHttpErrorEvent(webView.getId(), inputContentInfo));
