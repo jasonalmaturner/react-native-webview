@@ -983,7 +983,6 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
         final InputConnection ic = super.onCreateInputConnection(editorInfo);
         EditorInfoCompat.setContentMimeTypes(editorInfo,
                 new String [] {"image/*", "image/png", "image/gif", "image/jpeg", "video/mp4"});
-  
         final InputConnectionCompat.OnCommitContentListener callback =
             new InputConnectionCompat.OnCommitContentListener() {
                 @Override
@@ -1014,7 +1013,11 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                     return true;  // return true if succeeded
                 }
             };
-        return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
+        if (webView.onCheckIsTextEditor()) {
+          return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
+        } else {
+          return ic;
+        }
     }
 
     /**
