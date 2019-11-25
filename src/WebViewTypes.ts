@@ -224,6 +224,7 @@ export interface CommonNativeWebViewProps extends ViewProps {
   onLoadingProgress: (event: WebViewProgressEvent) => void;
   onLoadingStart: (event: WebViewNavigationEvent) => void;
   onHttpError: (event: WebViewHttpErrorEvent) => void;
+  onCommitContent: (event: any) => void;
   onMessage: (event: WebViewMessageEvent) => void;
   onShouldStartLoadWithRequest: (event: WebViewNavigationEvent) => void;
   showsHorizontalScrollIndicator?: boolean;
