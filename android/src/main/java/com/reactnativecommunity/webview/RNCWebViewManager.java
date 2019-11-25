@@ -1013,7 +1013,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                     return true;  // return true if succeeded
                 }
             };
-        if (webView.onCheckIsTextEditor()) {
+        if (ic != null) {
           return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
         } else {
           return ic;
