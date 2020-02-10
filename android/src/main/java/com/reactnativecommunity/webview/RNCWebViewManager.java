@@ -1015,7 +1015,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
                     event.putString("contentUri", inputContentInfo.getContentUri().toString());
                     event.putString("linkUri", inputContentInfo.getLinkUri().toString());
                     event.putString("clipDescription", inputContentInfo.getDescription().toString());
-                    // event.putString("mimeType", inputContentInfo.getDescription().getMimeType(0));
+                    event.putString("mimeType", inputContentInfo.getDescription().getMimeType(0));
                     dispatchEvent(
                       webView,
                       new TopCommitContentEvent(webView.getId(), event));
