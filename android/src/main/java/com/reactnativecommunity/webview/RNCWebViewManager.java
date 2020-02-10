@@ -1011,8 +1011,6 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   
                     // read and display inputContentInfo asynchronously.
                     // call inputContentInfo.releasePermission() as needed.
-                    // call my callback here?
-                    // callback(inputContentInfo, flags, opts)
                     WritableMap event = Arguments.createMap();
                     event.putString("contentUri", inputContentInfo.getContentUri().toString());
                     event.putString("linkUri", inputContentInfo.getLinkUri().toString());

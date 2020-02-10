@@ -216,11 +216,8 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     }
   }
 
-  onCommitContent = (event: any) => {
-    const { onCommitContent } = this.props;
-    if (onCommitContent) {
-      onCommitContent(event);
-    }
+  onCommitContent = () => {
+    // onCommitContent isn't supported in iOS. Noop if iOS.
   }
 
 
