@@ -124,6 +124,13 @@ export interface WebViewHttpError extends WebViewNativeEvent {
   statusCode: number;
 }
 
+export interface WebViewCommitContent {
+  clipDescription: string;
+  contentUri: string;
+  linkUri: string;
+  mimeType: string;
+}
+
 export type WebViewEvent = NativeSyntheticEvent<WebViewNativeEvent>;
 
 export type WebViewProgressEvent = NativeSyntheticEvent<
@@ -139,6 +146,8 @@ export type WebViewErrorEvent = NativeSyntheticEvent<WebViewError>;
 export type WebViewTerminatedEvent = NativeSyntheticEvent<WebViewNativeEvent>;
 
 export type WebViewHttpErrorEvent = NativeSyntheticEvent<WebViewHttpError>;
+
+export type WebViewCommitContentEvent = NativeSyntheticEvent<WebViewCommitContent>;
 
 export type DataDetectorTypes =
   | 'phoneNumber'

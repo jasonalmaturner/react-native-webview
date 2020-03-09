@@ -24,6 +24,7 @@ import {
   WebViewMessageEvent,
   WebViewNavigationEvent,
   WebViewProgressEvent,
+  WebViewCommitContentEvent,
   AndroidWebViewProps,
   NativeWebViewAndroid,
   State,
@@ -214,7 +215,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
     }
   }
 
-  onCommitContent = (event: any) => {
+  onCommitContent = (event: WebViewCommitContentEvent) => {
     const { onCommitContent } = this.props;
     if (onCommitContent) {
       onCommitContent(event);

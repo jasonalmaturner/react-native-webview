@@ -268,11 +268,8 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
     }
   }
 
-  onCommitContent = (event: any) => {
-    const { onCommitContent } = this.props;
-    if (onCommitContent) {
-      onCommitContent(event);
-    }
+  onCommitContent = () => {
+    // onCommitContent isn't supported in MacOS. Noop.
   }
 
   render() {
