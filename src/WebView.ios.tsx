@@ -220,7 +220,6 @@ class WebView extends React.Component<IOSWebViewProps, State> {
     // onCommitContent isn't supported in iOS. Noop if iOS.
   }
 
-
   onLoadingFinish = (event: WebViewNavigationEvent) => {
     const { onLoad, onLoadEnd } = this.props;
     if (onLoad) {

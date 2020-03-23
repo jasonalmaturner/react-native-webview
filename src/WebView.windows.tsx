@@ -150,6 +150,10 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
     });
   }
 
+  onCommitContent = () => {
+    // onCommitContent isn't supported in iOS. Noop if iOS.
+  }
+
   onLoadingFinish =(event: WebViewNavigationEvent) => {
     const {onLoad, onLoadEnd} = this.props;
     if(onLoad) {
@@ -238,6 +242,7 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
         onLoadingProgress={this.onLoadingProgress}
         onLoadingStart={this.onLoadingStart}
         onHttpError={this.onHttpError}
+        onCommitContent={this.onCommitContent}
         onMessage={this.onMessage}
         onScroll={this.props.onScroll}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
