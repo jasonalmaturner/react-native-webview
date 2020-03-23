@@ -151,7 +151,7 @@ export default class WebView extends React.Component<WebViewSharedProps, State> 
   }
 
   onCommitContent = () => {
-    // onCommitContent isn't supported in iOS. Noop if iOS.
+    // onCommitContent isn't supported in Windows. Noop if Windows.
   }
 
   onLoadingFinish =(event: WebViewNavigationEvent) => {
