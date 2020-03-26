@@ -133,6 +133,13 @@ export interface WebViewHttpError extends WebViewNativeEvent {
   statusCode: number;
 }
 
+export interface WebViewCommitContent {
+  clipDescription: string;
+  contentUri: string;
+  linkUri: string;
+  mimeType: string;
+}
+
 export type WebViewEvent = NativeSyntheticEvent<WebViewNativeEvent>;
 
 export type WebViewProgressEvent = NativeSyntheticEvent<
@@ -148,6 +155,8 @@ export type WebViewErrorEvent = NativeSyntheticEvent<WebViewError>;
 export type WebViewTerminatedEvent = NativeSyntheticEvent<WebViewNativeEvent>;
 
 export type WebViewHttpErrorEvent = NativeSyntheticEvent<WebViewHttpError>;
+
+export type WebViewCommitContentEvent = NativeSyntheticEvent<WebViewCommitContent>;
 
 export type DataDetectorTypes =
   | 'phoneNumber'
@@ -242,6 +251,7 @@ export interface CommonNativeWebViewProps extends ViewProps {
   onLoadingProgress: (event: WebViewProgressEvent) => void;
   onLoadingStart: (event: WebViewNavigationEvent) => void;
   onHttpError: (event: WebViewHttpErrorEvent) => void;
+  onCommitContent: (event: any) => void;
   onMessage: (event: WebViewMessageEvent) => void;
   onShouldStartLoadWithRequest: (event: WebViewNavigationEvent) => void;
   showsHorizontalScrollIndicator?: boolean;
@@ -844,6 +854,7 @@ export interface WebViewSharedProps extends ViewProps {
    * Works on iOS and Android (minimum API level 23).
    */
   onHttpError?: (event: WebViewHttpErrorEvent) => void;
+  onCommitContent?: (event: any) => void;
 
   /**
    * Function that is invoked when the `WebView` loading starts or ends.

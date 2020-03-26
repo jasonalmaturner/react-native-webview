@@ -15,6 +15,7 @@ import Scrolling from './examples/Scrolling';
 import Background from './examples/Background';
 import Uploads from './examples/Uploads';
 import Injection from './examples/Injection';
+import KeyboardGifs from './examples/KeyboardGifs';
 
 const TESTS = {
   Alerts: {
@@ -47,6 +48,14 @@ const TESTS = {
     description: 'Upload test',
     render() {
       return <Uploads />;
+    },
+  },
+  KeyboardGifs: {
+    title: 'Keyboard Gifs',
+    testId: 'Keyboard Gifs',
+    description: 'Keyboard gifs test',
+    render() {
+      return <KeyboardGifs />;
     },
   },
   Injection: {
@@ -119,6 +128,11 @@ export default class App extends Component<Props, State> {
             testID="testType_uploads"
             title="Uploads"
             onPress={() => this._changeTest('Uploads')}
+          />}
+          {Platform.OS === 'android' && <Button
+            testID="testType_keyboardGifs"
+            title="KeyboardGifs"
+            onPress={() => this._changeTest('KeyboardGifs')}
           />}
         </View>
 

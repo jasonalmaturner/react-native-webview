@@ -268,6 +268,10 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
     }
   }
 
+  onCommitContent = () => {
+    // onCommitContent isn't supported in MacOS. Noop.
+  }
+
   render() {
     const {
       nativeConfig = {},
@@ -331,6 +335,7 @@ class WebView extends React.Component<MacOSWebViewProps, State> {
         // TODO: find a better way to type this.
         source={resolveAssetSource(this.props.source as ImageSourcePropType)}
         style={webViewStyles}
+        onCommitContent={this.onCommitContent}
         {...nativeConfig.props}
       />
     );

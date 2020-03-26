@@ -24,6 +24,7 @@ import {
   WebViewMessageEvent,
   WebViewNavigationEvent,
   WebViewProgressEvent,
+  WebViewCommitContentEvent,
   AndroidWebViewProps,
   NativeWebViewAndroid,
   State,
@@ -214,6 +215,13 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
     }
   }
 
+  onCommitContent = (event: WebViewCommitContentEvent) => {
+    const { onCommitContent } = this.props;
+    if (onCommitContent) {
+      onCommitContent(event);
+    }
+  }
+
   onLoadingFinish = (event: WebViewNavigationEvent) => {
     const { onLoad, onLoadEnd } = this.props;
     const { nativeEvent: { url } } = event;
@@ -332,6 +340,7 @@ class WebView extends React.Component<AndroidWebViewProps, State> {
         onLoadingProgress={this.onLoadingProgress}
         onLoadingStart={this.onLoadingStart}
         onHttpError={this.onHttpError}
+        onCommitContent={this.onCommitContent}
         onMessage={this.onMessage}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         ref={this.webViewRef}

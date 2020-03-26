@@ -36,6 +36,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.view.inputmethod.EditorInfo;
+import androidx.core.view.inputmethod.EditorInfoCompat;
+import android.view.inputmethod.InputConnection;
+import androidx.core.view.inputmethod.InputConnectionCompat;
+import androidx.core.view.inputmethod.InputContentInfoCompat;
+import androidx.core.os.BuildCompat;
+import android.os.Bundle;
 
 import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
@@ -57,6 +64,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.ContentSizeChangeEvent;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativecommunity.webview.events.TopCommitContentEvent;
 import com.reactnativecommunity.webview.events.TopLoadingErrorEvent;
 import com.reactnativecommunity.webview.events.TopHttpErrorEvent;
 import com.reactnativecommunity.webview.events.TopLoadingFinishEvent;
@@ -544,6 +552,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     export.put(TopShouldStartLoadWithRequestEvent.EVENT_NAME, MapBuilder.of("registrationName", "onShouldStartLoadWithRequest"));
     export.put(ScrollEventType.getJSEventName(ScrollEventType.SCROLL), MapBuilder.of("registrationName", "onScroll"));
     export.put(TopHttpErrorEvent.EVENT_NAME, MapBuilder.of("registrationName", "onHttpError"));
+    export.put(TopCommitContentEvent.EVENT_NAME, MapBuilder.of("registrationName", "onCommitContent"));
     return export;
   }
 
@@ -976,6 +985,48 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     protected boolean sendContentSizeChangeEvents = false;
     private OnScrollDispatchHelper mOnScrollDispatchHelper;
     protected boolean hasScrollEvent = false;
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+        WebView webView = this;
+        final InputConnection ic = super.onCreateInputConnection(editorInfo);
+        EditorInfoCompat.setContentMimeTypes(editorInfo,
+                new String [] {"image/*", "image/png", "image/gif", "image/jpeg", "video/mp4"});
+        final InputConnectionCompat.OnCommitContentListener callback =
+            new InputConnectionCompat.OnCommitContentListener() {
+                @Override
+                public boolean onCommitContent(InputContentInfoCompat inputContentInfo,
+                        int flags, Bundle opts) {
+                    // read and display inputContentInfo asynchronously
+                    if (BuildCompat.isAtLeastNMR1() && (flags &
+                        InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION) != 0) {
+                        try {
+                            inputContentInfo.requestPermission();
+                        }
+                        catch (Exception e) {
+                            return false; // return false if failed
+                        }
+                    }
+  
+                    // read and display inputContentInfo asynchronously.
+                    // call inputContentInfo.releasePermission() as needed.
+                    WritableMap event = Arguments.createMap();
+                    event.putString("contentUri", inputContentInfo.getContentUri().toString());
+                    event.putString("linkUri", inputContentInfo.getLinkUri().toString());
+                    event.putString("clipDescription", inputContentInfo.getDescription().toString());
+                    event.putString("mimeType", inputContentInfo.getDescription().getMimeType(0));
+                    dispatchEvent(
+                      webView,
+                      new TopCommitContentEvent(webView.getId(), event));
+                    return true;  // return true if succeeded
+                }
+            };
+        if (ic != null) {
+          return InputConnectionCompat.createWrapper(ic, editorInfo, callback);
+        } else {
+          return ic;
+        }
+    }
 
     /**
      * WebView must be created with an context of the current activity
